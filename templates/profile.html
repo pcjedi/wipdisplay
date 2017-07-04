@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block titleadd %}    |    Profile{% if "name" in info %}    |{{info["name"]}}{% endif %}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="panel panel-info">
+{% for info_key in info %}
+      <div class="panel-heading">{{ info_key }} </div>
+      <div class="panel-body">{{ info[info_key] }}</div>
+{% endfor %}
+    </div>
+    <p>
+<a href={{url_for("logout")}} type="button" class="btn btn-warning">LogOut</a>
+<a href="https://security.google.com/settings/security/permissions" type="button" class="btn btn-info" >Manage your Google Permissions</a>
+</p>
+</div">
+{% endblock %}

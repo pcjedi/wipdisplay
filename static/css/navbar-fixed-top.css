@@ -1,0 +1,32 @@
+button:focus {outline:0;}
+html {
+        overflow-y:scroll;
+        //overflow: hidden;
+}
+body {
+    padding-top: 70px;
+}
+.jumbotron{
+    //padding : 0px;
+    margin-top : 10px;
+    margin-bottom: 40px;
+    //border-radius: 5px; 
+    //margin-right: 50px;
+    //margin-left: 50px;
+}
+.row_empty{
+    height: 38px;
+}
+.row_full{
+    height: 37px;
+}
+.panel-body{
+    overflow-wrap: break-word;
+}
+.hiddenRow {
+        padding: 0 !important;
+        border: 0!important;
+}
+@-ms-viewport     { width: device-width; }
+@-o-viewport      { width: device-width; }
+@viewport         { width: device-width; }

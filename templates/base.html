@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+	<title>WIPAnalysis{% block titleadd %}{% endblock %}</title>
+
+    <!-- Bootstrap core CSS -->
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+	<link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}">
+        <link href="{{url_for('static', filename='css/navbar-fixed-top.css')}}" rel="stylesheet">
+
+{% block headadd %}
+{% endblock %}
+</head>
+
+<body>
+<nav class="navbar navbar-default navbar-fixed-top">
+<!--navbar with button and brand-->
+ <div class="container">
+  <div class="navbar-header">
+    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+     <span class="sr-only">Toggle navigation</span>
+     <span class="icon-bar"></span>
+     <span class="icon-bar"></span>
+     <span class="icon-bar"></span>
+    </button>
+    <a class="navbar-brand" href={{url_for("index")}}>WIPAnalysis</a>
+  </div>
+<!--left navbar-->
+  <div id="navbar" class="navbar-collapse collapse" aria-expander="false" style="hight: 1px;">
+   <ul class="nav navbar-nav">
+{% if "google_token" in session %}
+    <li> <a href={{url_for("files")}}>Files</a> </li>
+{% else %}
+    <li> <a href={{url_for("files")}}>Files</a> </li>
+{% endif %}
+   </ul>
+<!-- right navbar -->
+   <ul class="nav navbar-nav navbar-right">
+{% if "google_userinfo" in session %}
+    <li> <a href={{ url_for("profile") }} >Profile</a> </li>
+    <li> <a href={{ url_for("logout") }} >LogOut</a> </li>
+{% else %}
+
+   <li> <a href={{url_for("googlelogin")}}>Login via Google</a> </li>
+{% endif %}
+   </ul>
+  </div>
+ </div>
+</nav>
+
+<!--
+<div class="modal fade" id="login" role="dialog">
+ <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Login Informations</h4>
+        </div>
+        <div class="modal-body">
+<div id="login-choose">
+<div class="btn-group btn-group-justified">
+ <a href='{{url_for("googlelogin")}}' class="btn collapsed" data-toggle="collapse" data-parent="#login-choose" data-target="#login-googleweg">Google</a>
+ <a href='#' class="btn collapsed" data-toggle="collapse" data-parent="#login-choose" data-target="#login-facebook">Facebook</a>
+ <a href='#' class="btn collapsed" data-toggle="collapse" data-parent="#login-choose" data-target="#login-twitter">Twitter</a>
+ <a href='#' class="btn collapsed" data-toggle="collapse" data-parent="#login-choose" data-target="#login-mail">Mail</a>
+</div>
+ <div class="panel">
+  <div id="login-google" class="panel-collapse collapse">
+ Google login note implemened yet.
+<a href="{{url_for('googlelogin')}}">Google</a>
+  </div>
+  <div id="login-facebook" class="panel-collapse collapse">
+   Facebook Login is not implemented yet.
+  </div>
+  <div id="login-twitter" class="panel-collapse collapse">
+   Twitter Login is not implemented yet.
+  </div>
+  <div id="login-mail" class="panel-collapse collapse">
+    Login via eMail is not implemented yet.
+  </div>
+ </div>
+</div>
+
+ </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+</div>
+</div>
+-->
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    <div class="container">
+    {% for category, message in messages %}
+      <div class="alert alert-{{ category }} alert-dismissable fade in">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <strong>{{ category.upper() }} </strong> {{ message }}
+      </div>
+    {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
+
+{% block content %}
+{% endblock %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="https://maxcdn.bootstrapcdn.com/js/ie10-viewport-bug-workaround.js"></script>
+</body>
+
+</html>

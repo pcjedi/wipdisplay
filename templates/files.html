@@ -1,0 +1,76 @@
+{% extends "base.html"%}
+
+{% block headadd %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+   <script>
+    var appId = "652587331338";
+    var oauthToken = "{{session.get("google_token",None)}}" ;
+
+    function token_expired() {
+        {% if "google_tokenexpire" in session %}
+        return  {{session["google_tokenexpire"]}}<Date.now()/1000
+        {% else %}
+        return true
+        {% endif %}
+   }
+
+    function loadPicker() {
+         if (token_expired()) {
+             window.location="{{url_for("googleperm", perm="driveread", redir="files")}}";
+         }else{
+             gapi.load('picker', {'callback': createPicker });
+         }
+    }
+
+    function createPicker() {
+        var view = new google.picker.DocsView(google.picker.ViewId.DOCS)
+                .setIncludeFolders(true);
+        var picker = new google.picker.PickerBuilder()
+                  .enableFeature(google.picker.Feature.NAV_HIDDEN)
+                  .enableFeature(google.picker.Feature.MULTISELECT_ENABLED)
+                  .setAppId(appId)
+                  .setOAuthToken(oauthToken)
+                  .addView(view)
+                  .addView(new google.picker.DocsUploadView())
+                  .setCallback(pickerCallback)
+                  .build();
+         picker.setVisible(true);
+    }
+
+    function pickerCallback(data) {
+      if (data.action == google.picker.Action.PICKED) {
+        var fileId = data.docs[0].id;
+        alert("You chose " + data.docs.length + " files. That's it for now.");
+      }
+    }
+
+    function expire_check(input) {
+      if (token_expired()) {
+        input.value="Use Google Drive"
+      } 
+    }
+
+
+    
+    </script>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <label class="btn btn-info btn-file">
+            Select Local File
+            <input type="file" id="uploadfile2" multiple="multiple" accept=".wip" style="display: none;">
+        </label>
+        {% if "drive" in session.get("google_tokeninfo",{"scope":""})["scope"] %}
+            <input onmouseover="expire_check(this)" onclick="loadPicker()" type="submit" name="submit" class="btn btn-info" value="Chose File from Google Drive">
+        {% else %}
+            <a href="{{url_for("googleperm", perm="driveread", redir="files")}}" class="btn btn-info" >Use Google Drive</a>
+        {% endif %}
+    </div>
+<div class="container-fluid">
+    <div id="files"></div>
+</div>
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script src="/static/js/specimageviewer2.js")}}"></script>
+<script type="text/javascript" src="https://apis.google.com/js/api.js"></script>
+{% endblock %}
