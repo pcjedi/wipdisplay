@@ -8,13 +8,17 @@ from flask.ext.sqlalchemy import SQLAlchemy
 from flask_oauthlib.client import OAuthException
 import time
 import requests
+import json
 
 app=Flask(__name__)
 app.secret_key = str(uuid4())
 db=SQLAlchemy(app)
 
-app.config['GOOGLE_ID'] = "652587331338-01or50j5if8l9cjnonp5f7u8jk2chrd1.apps.googleusercontent.com"
-app.config['GOOGLE_SECRET'] = "QsGPKWHS2-OxphNmPD0W6mIv"
+with open("../../pw.json") as f:
+    pws=json.load(f)
+
+app.config['GOOGLE_ID'] = pws["GOOGLE_ID"]
+app.config['GOOGLE_SECRET'] = pws["GOOGLE_SECRET"]
 oauth = OAuth(app)
 google = oauth.remote_app(
     'google',
